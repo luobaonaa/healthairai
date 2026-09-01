@@ -135,11 +135,10 @@ export default function Home() {
       animationFrame = 0;
     };
 
-    const followPointer = (event: PointerEvent) => {
-      if (event.pointerType === "touch") return;
+    const followPosition = (clientX: number, clientY: number) => {
       const bounds = mascot.getBoundingClientRect();
-      const rawX = (event.clientX - (bounds.left + bounds.width / 2)) / (window.innerWidth / 2);
-      const rawY = (event.clientY - (bounds.top + bounds.height / 2)) / (window.innerHeight / 2);
+      const rawX = (clientX - (bounds.left + bounds.width / 2)) / (window.innerWidth / 2);
+      const rawY = (clientY - (bounds.top + bounds.height / 2)) / (window.innerHeight / 2);
       const visualX = Math.max(-1, Math.min(1, rawX));
       const visualY = Math.max(-1, Math.min(1, rawY));
       pointerX = rawX;
@@ -148,6 +147,17 @@ export default function Home() {
       mascot.style.setProperty("--mascot-y", `${visualY * 4}px`);
       mascot.style.setProperty("--mascot-rotate", `${visualX * 1.4}deg`);
       if (!animationFrame) animationFrame = window.requestAnimationFrame(updateMascot);
+    };
+
+    const followPointer = (event: PointerEvent) => {
+      // Touch has its own listener so it keeps updating while the page scrolls.
+      if (event.pointerType === "touch") return;
+      followPosition(event.clientX, event.clientY);
+    };
+
+    const followTouch = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (touch) followPosition(touch.clientX, touch.clientY);
     };
 
     const resetMascot = () => {
@@ -160,9 +170,13 @@ export default function Home() {
     };
 
     window.addEventListener("pointermove", followPointer, { passive: true });
+    window.addEventListener("touchstart", followTouch, { passive: true });
+    window.addEventListener("touchmove", followTouch, { passive: true });
     document.documentElement.addEventListener("mouseleave", resetMascot);
     return () => {
       window.removeEventListener("pointermove", followPointer);
+      window.removeEventListener("touchstart", followTouch);
+      window.removeEventListener("touchmove", followTouch);
       document.documentElement.removeEventListener("mouseleave", resetMascot);
       video.removeEventListener("loadeddata", renderTransparentFrame);
       video.removeEventListener("seeked", renderTransparentFrame);
@@ -241,7 +255,7 @@ export default function Home() {
       <MobileInstallPrompt />
       <div ref={mascotRef} className="hero-mascot" data-testid="hero-mascot">
         <video ref={mascotVideoRef} className="mascot-source-video" src="/assets/healthair-mascot-look-v2.mp4" aria-hidden="true" muted playsInline preload="auto" onLoadedMetadata={event => { event.currentTarget.currentTime = event.currentTarget.duration / 2; }} />
-        <canvas ref={mascotCanvasRef} className="mascot-transparent-canvas" width="320" height="320" aria-label="Maskot HealthAir mengikuti arah kursor" />
+        <canvas ref={mascotCanvasRef} className="mascot-transparent-canvas" width="320" height="320" aria-label="Maskot HealthAir mengikuti arah kursor atau jari" />
         <span className="mascot-shadow" aria-hidden="true" />
       </div>
     </div>

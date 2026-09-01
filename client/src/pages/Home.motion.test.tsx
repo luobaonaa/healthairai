@@ -18,13 +18,35 @@ describe("Home atmospheric motion", () => {
     expect(document.querySelector(".hero-kicker")?.className).toContain("hero-kicker");
     expect(screen.getByText("Baca udaranya. Pilih langkah yang lebih nyaman.").className).toContain("hero-description");
     expect(document.querySelector(".hero-actions")?.className).toContain("hero-actions");
-    expect(screen.getByLabelText("Maskot HealthAir mengikuti arah kursor")).toBeTruthy();
+    expect(screen.getByLabelText("Maskot HealthAir mengikuti arah kursor atau jari")).toBeTruthy();
     expect(screen.getByTestId("hero-mascot")).toBeTruthy();
     expect(screen.getByText("37")).toBeTruthy();
     expect(screen.getByText(/Data langsung · Open-Meteo/)).toBeTruthy();
     expect(document.querySelectorAll(".feature-card")).toHaveLength(3);
     expect(document.querySelector(".cta-section")).toBeTruthy();
     expect(screen.getByRole("button", { name: "Pasang aplikasi" })).toBeTruthy();
+  });
+
+  it("makes the mascot follow a finger without blocking page scrolling", () => {
+    render(<Home />);
+    const mascot = screen.getByTestId("hero-mascot");
+    vi.spyOn(mascot, "getBoundingClientRect").mockReturnValue({
+      left: 800,
+      top: 500,
+      width: 172,
+      height: 183,
+      right: 972,
+      bottom: 683,
+      x: 800,
+      y: 500,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.touchStart(window, { touches: [{ clientX: 120, clientY: 90 }] });
+
+    expect(mascot.style.getPropertyValue("--mascot-x")).not.toBe("0px");
+    expect(mascot.style.getPropertyValue("--mascot-y")).not.toBe("0px");
+    expect(mascot.style.getPropertyValue("--mascot-rotate")).not.toBe("0deg");
   });
 
   it("shows mobile installation guidance when the browser has no native prompt", () => {
