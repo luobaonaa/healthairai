@@ -1,4 +1,4 @@
-const CACHE_NAME = "healthair-shell-v4";
+const CACHE_NAME = "healthair-shell-v5";
 const SHELL_URLS = ["/", "/explore", "/trends", "/information", "/manifest.webmanifest", "/assets/healthair-logo-transparent.png", "/assets/healthair-logo-transparent-192.png"];
 
 self.addEventListener("install", event => {

@@ -21,7 +21,7 @@ import {
   fetchLiveEnvironmentalReading,
   fetchRouteExposure,
 } from "./liveEnvironment.js";
-import { answerAirQuestion } from "./airAssistant.js";
+import { answerAirQuestion, type AirAssistantContext } from "./airAssistant.js";
 import {
   reverseLocationSuggestion,
   searchLocationSuggestions,
@@ -56,6 +56,8 @@ const airAssistantMessage = z.object({
 });
 const airAssistantContext = z.object({
   location: z.string().trim().min(1).max(240),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
   profile: z.string().trim().min(1).max(120),
   aqi: z.number().min(0).max(1000),
   pm25: z.number().min(0).max(5000),
@@ -69,6 +71,59 @@ const airAssistantContext = z.object({
   source: z.string().trim().min(1).max(120),
   observedAt: z.string().trim().min(1).max(64).optional(),
 });
+
+const assistantEnvironmentPattern = /\b(aqi|pm\s?2[.,]?5|pm\s?10|kualitas udara|udara|polusi|asap|cuaca|suhu|kelembapan|angin|ozon)\b/i;
+
+function requestedAssistantLocation(question: string) {
+  const match = question.match(/\b(?:di|sekitar|daerah|wilayah)\s+([^?!.]{2,90})/i);
+  return match?.[1]
+    .replace(/\b(?:saat ini|sekarang|hari ini|dong|ya|nih)\b.*$/i, "")
+    .trim() || null;
+}
+
+async function refreshAssistantEnvironment(
+  messages: Array<z.infer<typeof airAssistantMessage>>,
+  provided: z.infer<typeof airAssistantContext>
+): Promise<AirAssistantContext> {
+  const question = [...messages].reverse().find(message => message.role === "user")?.content ?? "";
+  if (!assistantEnvironmentPattern.test(question)) return provided;
+
+  let latitude = provided.latitude;
+  let longitude = provided.longitude;
+  let location = provided.location;
+  const requested = requestedAssistantLocation(question);
+
+  if (requested && !provided.location.toLocaleLowerCase("id-ID").includes(requested.toLocaleLowerCase("id-ID"))) {
+    const suggestion = (await searchLocationSuggestions(requested))[0];
+    if (suggestion) {
+      latitude = suggestion.latitude;
+      longitude = suggestion.longitude;
+      location = [suggestion.name, suggestion.caption].filter(Boolean).join(", ");
+    }
+  }
+
+  if (latitude === undefined || longitude === undefined) return provided;
+  const live = await fetchLiveEnvironmentalReading(latitude, longitude);
+  if (!live) return provided;
+
+  return {
+    ...provided,
+    location,
+    latitude,
+    longitude,
+    aqi: live.aqi,
+    pm25: live.pm25,
+    pm10: live.pm10,
+    ozone: live.ozone,
+    temperature: live.temperature,
+    humidity: live.humidity,
+    wind: live.wind,
+    weather: live.weather,
+    status: live.status,
+    source: live.source,
+    observedAt: live.observedAt,
+  };
+}
 const roadRouteInput = z.object({
   originLatitude: z.number().min(-90).max(90),
   originLongitude: z.number().min(-180).max(180),
@@ -294,7 +349,8 @@ export const appRouter = router({
       )
       .mutation(async ({ input }) => {
         try {
-          return await answerAirQuestion(input.messages, input.context);
+          const liveContext = await refreshAssistantEnvironment(input.messages, input.context);
+          return await answerAirQuestion(input.messages, liveContext);
         } catch (error) {
           console.error("[AI] HealthAir assistant request failed", error);
           throw new TRPCError({

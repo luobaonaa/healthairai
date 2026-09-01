@@ -1,6 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import HealthAirLogo from "@/components/HealthAirLogo";
-import MobileInstallPrompt from "@/components/MobileInstallPrompt";
 import { getAqiCategory } from "@/lib/environment";
 import { trpc } from "@/lib/trpc";
 import { ArrowRight, Compass, Leaf, Map, ShieldCheck, Sparkles, Wind } from "lucide-react";
@@ -252,7 +251,6 @@ export default function Home() {
         </section>
       </main>
       <footer className="landing-footer"><span>© 2026 HealthAir AI</span><span>A smarter map for healthier environments.</span></footer>
-      <MobileInstallPrompt />
       <div ref={mascotRef} className="hero-mascot" data-testid="hero-mascot">
         <video ref={mascotVideoRef} className="mascot-source-video" src="/assets/healthair-mascot-look-v2.mp4" aria-hidden="true" muted playsInline preload="auto" onLoadedMetadata={event => { event.currentTarget.currentTime = event.currentTarget.duration / 2; }} />
         <canvas ref={mascotCanvasRef} className="mascot-transparent-canvas" width="320" height="320" aria-label="Maskot HealthAir mengikuti arah kursor atau jari" />

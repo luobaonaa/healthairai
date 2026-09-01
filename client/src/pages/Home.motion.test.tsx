@@ -24,7 +24,6 @@ describe("Home atmospheric motion", () => {
     expect(screen.getByText(/Data langsung · Open-Meteo/)).toBeTruthy();
     expect(document.querySelectorAll(".feature-card")).toHaveLength(3);
     expect(document.querySelector(".cta-section")).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Pasang aplikasi" })).toBeTruthy();
   });
 
   it("makes the mascot follow a finger without blocking page scrolling", () => {
@@ -49,10 +48,4 @@ describe("Home atmospheric motion", () => {
     expect(mascot.style.getPropertyValue("--mascot-rotate")).not.toBe("0deg");
   });
 
-  it("shows mobile installation guidance when the browser has no native prompt", () => {
-    render(<Home />);
-    fireEvent.click(screen.getByRole("button", { name: "Pasang aplikasi" }));
-    expect(screen.getByRole("dialog", { name: "Pasang aplikasi HealthAir" })).toBeTruthy();
-    expect(screen.getByText(/Tambahkan ke layar utama/i)).toBeTruthy();
-  });
 });

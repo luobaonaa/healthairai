@@ -69,6 +69,21 @@ describe("HealthAir AI risk guidance", () => {
     expect(result.answer).toContain("peta HealthAir");
   });
 
+  it("replaces a provider data denial with the verified Open-Meteo reading", async () => {
+    llmMocks.invokeLLM.mockResolvedValue({
+      choices: [{ message: { content: "Maaf, saya tidak memiliki data kualitas udara yang spesifik untuk Kebon Jeruk." } }],
+    });
+    const result = await answerAirQuestion(
+      [{ role: "user", content: "Bagaimana kondisi udara di Kebon Jeruk?" }],
+      { ...hazardousContext, location: "Kebon Jeruk, Jakarta Barat", aqi: 61, pm25: 22, pm10: 34, status: "Sedang" }
+    );
+
+    expect(result.answer).toContain("Di Kebon Jeruk, Jakarta Barat");
+    expect(result.answer).toContain("AQI 61 (Sedang)");
+    expect(result.answer).toContain("Open-Meteo");
+    expect(result.answer).not.toContain("tidak memiliki data");
+  });
+
   it("answers an off-topic question without injecting an unrelated hazardous-air warning", async () => {
     llmMocks.invokeLLM.mockResolvedValue({
       choices: [

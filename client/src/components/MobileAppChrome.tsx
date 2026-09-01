@@ -1,4 +1,3 @@
-import MobileInstallPrompt from "@/components/MobileInstallPrompt";
 import { BarChart3, Info, Map, Sparkles } from "lucide-react";
 import React from "react";
 import { Link, useLocation } from "wouter";
@@ -17,9 +16,7 @@ export default function MobileAppChrome() {
   ];
 
   return (
-    <>
-      {location !== "/explore" && <MobileInstallPrompt />}
-      <nav className="mobile-bottom-nav" aria-label="Navigasi aplikasi HealthAir">
+    <nav className="mobile-bottom-nav" aria-label="Navigasi aplikasi HealthAir">
         {items.map(({ href, label, icon: Icon, active }) => (
           <Link
             key={label}
@@ -37,7 +34,6 @@ export default function MobileAppChrome() {
             <span>{label}</span>
           </Link>
         ))}
-      </nav>
-    </>
+    </nav>
   );
 }

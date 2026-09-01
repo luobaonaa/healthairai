@@ -871,6 +871,8 @@ export default function Explorer() {
       })),
       context: {
         location: `${selectedLocation.name}, ${selectedLocation.caption}`,
+        latitude: selectedLocation.lat,
+        longitude: selectedLocation.lng,
         profile: profileLabels[profile],
         aqi: reading.aqi,
         pm25: reading.pm25,

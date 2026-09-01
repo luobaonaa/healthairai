@@ -13,6 +13,8 @@ export type AirAssistantMessage = {
 
 export type AirAssistantContext = {
   location: string;
+  latitude?: number;
+  longitude?: number;
   profile: string;
   aqi: number;
   pm25: number;
@@ -388,10 +390,21 @@ ${buildContext(context)}`;
     riskWarning && !answer.includes(riskWarning)
       ? `${riskWarning}\n\n${answer}`
       : answer;
+  const verifiedEnvironment = isEnvironmentQuestion(question)
+    ? environmentFallback(context)
+    : null;
+  const deniesAvailableEnvironment = /(?:tidak|belum) (?:memiliki|mempunyai|mendapatkan|tersedia).{0,45}(?:data|informasi).{0,45}(?:udara|aqi|lokasi)/i.test(safeAnswer);
+  const reliableAnswer = verifiedEnvironment
+    ? deniesAvailableEnvironment
+      ? `${riskWarning ? `${riskWarning}\n\n` : ""}${verifiedEnvironment}`
+      : safeAnswer.includes(`AQI ${context.aqi}`)
+        ? safeAnswer
+        : `${verifiedEnvironment}\n\n${safeAnswer}`
+    : safeAnswer;
   return {
     answer: isEnvironmentQuestion(question)
-      ? withMapInvitation(safeAnswer, messages, false)
-      : safeAnswer.trim(),
+      ? withMapInvitation(reliableAnswer, messages, false)
+      : reliableAnswer.trim(),
     fallback,
   };
 }

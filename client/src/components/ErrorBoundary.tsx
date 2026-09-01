@@ -11,6 +11,9 @@ interface State {
   error: Error | null;
 }
 
+const chunkErrorPattern = /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i;
+const chunkReloadKey = "healthair-chunk-reload-at";
+
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -20,6 +23,22 @@ class ErrorBoundary extends Component<Props, State> {
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
+
+  componentDidCatch(error: Error) {
+    if (!chunkErrorPattern.test(error.message)) return;
+    const lastReload = Number(window.sessionStorage.getItem(chunkReloadKey) ?? 0);
+    if (Date.now() - lastReload < 30_000) return;
+    window.sessionStorage.setItem(chunkReloadKey, String(Date.now()));
+    const latest = new URL(window.location.href);
+    latest.searchParams.set("refresh", String(Date.now()));
+    window.location.replace(latest.toString());
+  }
+
+  private reloadLatest = () => {
+    const latest = new URL(window.location.href);
+    latest.searchParams.set("refresh", String(Date.now()));
+    window.location.replace(latest.toString());
+  };
 
   render() {
     if (this.state.hasError) {
@@ -31,16 +50,13 @@ class ErrorBoundary extends Component<Props, State> {
               className="text-destructive mb-6 flex-shrink-0"
             />
 
-            <h2 className="text-xl mb-4">An unexpected error occurred.</h2>
-
-            <div className="p-4 w-full rounded bg-muted overflow-auto mb-6">
-              <pre className="text-sm text-muted-foreground whitespace-break-spaces">
-                {this.state.error?.stack}
-              </pre>
-            </div>
+            <h2 className="text-xl mb-3">Tampilan perlu diperbarui.</h2>
+            <p className="mb-6 text-center text-muted-foreground">
+              Versi terbaru HealthAir sudah tersedia. Muat ulang halaman untuk melanjutkan.
+            </p>
 
             <button
-              onClick={() => window.location.reload()}
+              onClick={this.reloadLatest}
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-lg",
                 "bg-primary text-primary-foreground",
@@ -48,7 +64,7 @@ class ErrorBoundary extends Component<Props, State> {
               )}
             >
               <RotateCcw size={16} />
-              Reload Page
+              Muat ulang
             </button>
           </div>
         </div>

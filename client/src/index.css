@@ -980,3 +980,81 @@ button { cursor: pointer; }
 @media (display-mode: standalone) {
   .mobile-install-trigger { display:none; }
 }
+
+/* Compact phone layout: preserve the map as the main surface. */
+.mobile-install-trigger, .mobile-install-dialog-root { display:none !important; }
+
+@media (max-width: 680px) {
+  .hero { padding:32px 0 28px; }
+  .hero h1 { font-size:clamp(37px,11vw,44px); }
+  .hero-map-wrap { min-height:340px; }
+  .hero-map { inset:0 0 62px; }
+  .trust-row { gap:14px 18px; padding:18px 0 28px; }
+  .trust-row span { gap:7px; font-size:10px; line-height:1.45; }
+  .trust-row span:last-child { grid-column:1 / -1; }
+  .land-section { padding:48px 16px; }
+  .section-top { margin-bottom:30px; }
+  .section-top h2 { font-size:clamp(30px,9.5vw,38px); }
+  .section-top p { font-size:13px; }
+  .hero-mascot { right:3px; bottom:5px; width:116px; height:124px; }
+
+  .mobile-bottom-nav { right:8px; bottom:max(6px,env(safe-area-inset-bottom)); left:8px; min-height:56px; padding:4px; border-radius:18px; }
+  .mobile-bottom-nav a { min-height:46px; gap:2px; border-radius:13px; font-size:7px; }
+  .mobile-bottom-nav a svg { width:17px; height:17px; }
+
+  .explorer-topbar { top:max(8px,env(safe-area-inset-top)); right:8px; left:8px; gap:6px; }
+  .map-search { height:40px; border-radius:13px; }
+  .map-search > svg { width:17px; }
+  .map-search input { font-size:14px !important; }
+  .map-profile .map-avatar { width:40px; min-height:40px; height:40px; }
+  .map-profile .avatar-disc { width:30px; height:30px; }
+  .explorer-topbar .assistant-toggle, .explorer-topbar .map-icon-button:not(.assistant-toggle) { display:none; }
+  .explorer .map-section-nav { top:max(8px,env(safe-area-inset-top)); right:54px; }
+  .explorer .map-section-nav .section-menu-trigger { width:40px; height:40px; min-height:40px; justify-content:center; padding:0; border-radius:13px; }
+  .explorer .map-section-nav .section-menu-trigger span { display:none; }
+  .explorer-topbar .map-search { margin-right:86px; }
+
+  .air-risk-alert { top:max(56px,calc(env(safe-area-inset-top) + 48px)); width:calc(100vw - 16px); max-height:132px; gap:7px; padding:8px 34px 8px 7px; border-radius:14px; overflow:hidden; }
+  .puffy-proactive-alert > .puffy-alert-avatar { width:43px; height:43px; }
+  .puffy-proactive-alert .puffy-alert-avatar .healthair-chat-avatar { width:48px; height:48px; }
+  .air-risk-alert strong { font-size:10px; }
+  .air-risk-alert p { display:-webkit-box; overflow:hidden; margin-top:2px; font-size:8px; line-height:1.35; -webkit-box-orient:vertical; -webkit-line-clamp:2; }
+  .puffy-proactive-alert small { font-size:7px; }
+  .puffy-proactive-alert div button { margin-top:3px; padding:4px 7px; font-size:7px; }
+  .puffy-proactive-alert .air-risk-close { top:7px; right:7px; width:24px; height:24px; }
+
+  .location-card { left:8px; bottom:calc(196px + env(safe-area-inset-bottom)); width:calc(100% - 16px); max-height:178px; padding:9px 10px; border-radius:15px; scrollbar-gutter:auto; }
+  .location-card .card-kicker { font-size:8px; }
+  .location-card h2 { margin:3px 0 0; font-size:15px; }
+  .location-card .place-caption, .location-card .mini-trend, .location-card .insight-box, .location-card .weather-strip, .location-card .data-provenance, .location-card .card-actions { display:none; }
+  .location-card .status-line { gap:5px; margin-top:6px; }
+  .location-card .status-badge { padding:3px 6px; font-size:8px; }
+  .location-card .live-pill { font-size:7px; }
+  .location-card .metric-grid { gap:5px; margin:7px 0; }
+  .location-card .metric { min-height:50px; padding:6px; border-radius:9px; }
+  .location-card .metric span { margin-bottom:1px; font-size:7px; }
+  .location-card .metric strong { font-size:14px; }
+  .location-card .metric small { display:block; overflow:hidden; font-size:7px; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
+  .location-card .data-freshness { margin:0; padding:5px 6px; border-radius:8px; }
+  .location-card .data-freshness strong { font-size:7px; }
+  .location-card .data-freshness small { display:none; }
+  .panel-hide-side { top:7px; right:7px; width:23px; height:23px; }
+
+  .places-panel { right:8px; bottom:calc(68px + env(safe-area-inset-bottom)); left:8px; width:auto; max-height:122px; padding:7px; border-radius:15px; }
+  .places-panel-top { padding:0 2px 5px; }
+  .places-panel-top h3 { font-size:10px; }
+  .places-panel-top p, .places-panel-actions > svg { display:none; }
+  .places-scroll { gap:5px; }
+  .place-card { min-width:142px; padding:7px; border-radius:10px; }
+  .place-card strong { max-width:105px; font-size:9px; }
+  .place-card .score { min-width:23px; height:23px; border-radius:7px; font-size:8px; }
+  .place-card p { margin:3px 0 4px; font-size:7px; }
+  .place-factors span { padding:2px 4px; font-size:7px; }
+  .place-rationale-toggle, .place-rationale, .route-callout { display:none; }
+  .panel-hide-bottom { width:23px; height:23px; }
+  .map-current-control { right:8px; bottom:calc(196px + env(safe-area-inset-bottom)); }
+
+  .air-assistant-panel { top:max(56px,calc(env(safe-area-inset-top) + 48px)); right:8px; width:calc(100vw - 16px); height:calc(100dvh - 128px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); border-radius:16px; }
+  .air-assistant-header .air-assistant-logo { width:31px; height:31px; }
+  .air-assistant-header { padding-bottom:6px; }
+}
