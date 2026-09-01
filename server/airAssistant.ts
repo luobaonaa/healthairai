@@ -4,7 +4,7 @@ import {
   type ImageContent,
   type Message,
   type TextContent,
-} from "./_core/llm";
+} from "./_core/llm.js";
 
 export type AirAssistantMessage = {
   role: "user" | "assistant";

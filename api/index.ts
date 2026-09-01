@@ -1,4 +1,4 @@
-import app from "../server/_core/app";
+import app from "../server/_core/app.js";
 import type { Request, Response } from "express";
 
 export function restoreRewrittenApiPath(requestUrl: string) {

@@ -2,7 +2,7 @@ import {
   makeRequest,
   type DirectionsResult,
   type TravelMode as DirectionsMode,
-} from "./_core/map";
+} from "./_core/map.js";
 
 export type RoadRouteMode = "walk" | "motor" | "car" | "transit";
 

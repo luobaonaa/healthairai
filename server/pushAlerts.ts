@@ -1,7 +1,7 @@
 import webpush from "web-push";
-import { ENV } from "./_core/env";
-import { getPushSubscriptions, getSavedLocations, getUserPreferences, markPushAlertSent, removePushSubscriptionByEndpoint } from "./db";
-import { fetchLiveEnvironmentalReading } from "./liveEnvironment";
+import { ENV } from "./_core/env.js";
+import { getPushSubscriptions, getSavedLocations, getUserPreferences, markPushAlertSent, removePushSubscriptionByEndpoint } from "./db.js";
+import { fetchLiveEnvironmentalReading } from "./liveEnvironment.js";
 
 const alertIntervalMs = 5 * 60 * 1000;
 const repeatCooldownMs = 6 * 60 * 60 * 1000;

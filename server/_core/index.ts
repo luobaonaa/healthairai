@@ -1,8 +1,8 @@
 import "dotenv/config";
 import { createServer } from "http";
-import app from "./app";
-import { serveStatic, setupVite } from "./vite";
-import { startAirQualityPushScheduler } from "../pushAlerts";
+import app from "./app.js";
+import { serveStatic, setupVite } from "./vite.js";
+import { startAirQualityPushScheduler } from "../pushAlerts.js";
 
 async function startServer() {
   const server = createServer(app);

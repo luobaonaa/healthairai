@@ -1,5 +1,5 @@
 import { randomBytes, randomUUID, scrypt, timingSafeEqual } from "crypto";
-import { createLocalAccountUser, getLocalAccountByEmail } from "./db";
+import { createLocalAccountUser, getLocalAccountByEmail } from "./db.js";
 
 const KEY_LENGTH = 64;
 

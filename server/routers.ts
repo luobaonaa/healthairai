@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { COOKIE_NAME } from "../shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
-import { systemRouter } from "./_core/systemRouter";
-import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { COOKIE_NAME } from "../shared/const.js";
+import { getSessionCookieOptions } from "./_core/cookies.js";
+import { systemRouter } from "./_core/systemRouter.js";
+import { protectedProcedure, publicProcedure, router } from "./_core/trpc.js";
 import {
   clearEnvironmentalData,
   exportEnvironmentalData,
@@ -14,27 +14,27 @@ import {
   savePushSubscription,
   saveUserLocation,
   saveUserPreferences,
-} from "./db";
-import { sdk } from "./_core/sdk";
+} from "./db.js";
+import { sdk } from "./_core/sdk.js";
 import {
   fetchAqiTrend,
   fetchLiveEnvironmentalReading,
   fetchRouteExposure,
-} from "./liveEnvironment";
-import { answerAirQuestion } from "./airAssistant";
+} from "./liveEnvironment.js";
+import { answerAirQuestion } from "./airAssistant.js";
 import {
   reverseLocationSuggestion,
   searchLocationSuggestions,
-} from "./locationSearch";
+} from "./locationSearch.js";
 import {
   LocalAccountError,
   registerLocalAccount,
   signInLocalAccount,
-} from "./localAccounts";
-import { getRoadRoute } from "./roadRouting";
+} from "./localAccounts.js";
+import { getRoadRoute } from "./roadRouting.js";
 import { TRPCError } from "@trpc/server";
-import { ENV } from "./_core/env";
-import { pushAlertsConfigured } from "./pushAlerts";
+import { ENV } from "./_core/env.js";
+import { pushAlertsConfigured } from "./pushAlerts.js";
 
 const profileType = z.enum([
   "General",

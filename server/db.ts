@@ -1,9 +1,9 @@
 import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { createPool, type Pool } from "mysql2";
-import { InsertUser, feedbackMessages, localAccounts, pushSubscriptions, savedLocations, userPreferences, users } from "../drizzle/schema";
-import { ENV } from "./_core/env";
-import { ensureDatabaseSchema } from "./schema-bootstrap";
+import { InsertUser, feedbackMessages, localAccounts, pushSubscriptions, savedLocations, userPreferences, users } from "../drizzle/schema.js";
+import { ENV } from "./_core/env.js";
+import { ensureDatabaseSchema } from "./schema-bootstrap.js";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 let _pool: Pool | null = null;
