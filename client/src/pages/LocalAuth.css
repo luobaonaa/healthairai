@@ -1,0 +1,23 @@
+.local-auth-page { min-height: 100vh; display: grid; place-items: center; position: relative; overflow: hidden; padding: 2rem; background: #f5fafb; color: #173742; }
+.local-auth-orb { position: absolute; width: 33rem; height: 33rem; border-radius: 50%; filter: blur(16px); opacity: .58; pointer-events: none; }
+.local-auth-orb.one { top: -17rem; right: -8rem; background: #aee9f0; }
+.local-auth-orb.two { bottom: -20rem; left: -12rem; background: #c5f1de; }
+.local-auth-card { position: relative; width: min(100%, 31rem); padding: 1.5rem; border: 1px solid rgba(30, 110, 124, .12); border-radius: 1.7rem; background: rgba(255,255,255,.86); box-shadow: 0 1.5rem 4.5rem rgba(22,72,86,.14); backdrop-filter: blur(18px); }
+.local-auth-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; font-size:.82rem; }
+.local-auth-back { display:flex; align-items:center; gap:.35rem; color:#47717b; font-weight:700; }
+.local-auth-intro { margin: 2.5rem 0 1.5rem; }
+.local-auth-icon { width: 2.6rem; height: 2.6rem; display:grid; place-items:center; margin-bottom:1rem; border-radius:.9rem; color:#196c79; background:#dff6f4; }
+.local-auth-intro h1 { max-width: 9em; margin:.65rem 0 .55rem; font-size: clamp(2rem, 5vw, 2.8rem); line-height:1.02; letter-spacing:-.06em; }
+.local-auth-intro p { max-width: 34rem; margin:0; color:#57737b; line-height:1.65; }
+.local-auth-form { display:grid; gap:1rem; }
+.local-auth-form label { display:grid; gap:.42rem; color:#34525b; font-size:.82rem; font-weight:800; }
+.local-auth-form label > div { display:flex; align-items:center; gap:.65rem; padding:.1rem .8rem; min-height:3rem; border:1px solid #d7e6e8; border-radius:.85rem; background:#fff; transition:border-color .18s ease, box-shadow .18s ease; }
+.local-auth-form label > div:focus-within { border-color:#3ba8b6; box-shadow:0 0 0 .2rem rgba(59,168,182,.13); }
+.local-auth-form input { min-width:0; flex:1; border:0; outline:0; background:transparent; color:#173742; font:inherit; }
+.local-auth-form label button { border:0; background:transparent; color:#5b818a; cursor:pointer; }
+.local-auth-submit { width:100%; justify-content:center; margin-top:.35rem; }
+.local-auth-error { margin:0; padding:.7rem .85rem; border-radius:.7rem; color:#a13131; background:#fff0ef; font-size:.86rem; font-weight:650; }
+.local-auth-switch, .local-auth-note { margin:1.3rem 0 0; color:#5b747c; font-size:.88rem; text-align:center; }
+.local-auth-switch a { color:#0e7787; font-weight:800; }
+.local-auth-note { margin-top:.55rem; font-size:.75rem; line-height:1.5; }
+@media (max-width: 520px) { .local-auth-page { min-height:100svh; padding:max(1rem,env(safe-area-inset-top)) 1rem max(1rem,env(safe-area-inset-bottom)); align-items:start; } .local-auth-card { margin-top:1rem; padding:1.2rem; border-radius:1.3rem; } .local-auth-form input { min-height:44px; font-size:16px; } .local-auth-submit, .local-auth-back { min-height:44px; } }

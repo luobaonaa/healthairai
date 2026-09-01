@@ -1,0 +1,23 @@
+{
+  "name": "HealthAir AI",
+  "short_name": "HealthAir",
+  "id": "/explore",
+  "scope": "/",
+  "description": "Peta kualitas udara, cuaca, dan rute dengan estimasi paparan.",
+  "start_url": "/explore",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f5f9fc",
+  "theme_color": "#4aa7ca",
+  "lang": "id",
+  "categories": ["health", "navigation", "weather"],
+  "shortcuts": [
+    { "name": "Buka peta", "short_name": "Peta", "url": "/explore", "icons": [{ "src": "/assets/healthair-logo-transparent-192.png", "sizes": "192x192", "type": "image/png" }] },
+    { "name": "Lihat tren udara", "short_name": "Tren", "url": "/trends", "icons": [{ "src": "/assets/healthair-logo-transparent-192.png", "sizes": "192x192", "type": "image/png" }] }
+  ],
+  "icons": [
+    { "src": "/assets/healthair-logo-transparent-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/healthair-logo-transparent.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
