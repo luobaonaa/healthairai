@@ -10,6 +10,7 @@ let _pool: Pool | null = null;
 
 function createDatabasePool(databaseUrl: string) {
   const url = new URL(databaseUrl);
+  const caCertificate = process.env.DATABASE_CA_CERT?.replace(/\\n/g, "\n").trim();
   const sslRequired =
     url.searchParams.get("ssl-mode")?.toUpperCase() === "REQUIRED" ||
     url.searchParams.get("sslmode")?.toLowerCase() === "require" ||
@@ -22,7 +23,12 @@ function createDatabasePool(databaseUrl: string) {
     user: decodeURIComponent(url.username),
     password: decodeURIComponent(url.password),
     database: decodeURIComponent(url.pathname.replace(/^\//, "")),
-    ssl: sslRequired ? {} : undefined,
+    ssl: sslRequired
+      ? {
+          ca: caCertificate || undefined,
+          rejectUnauthorized: Boolean(caCertificate),
+        }
+      : undefined,
     waitForConnections: true,
     connectionLimit: 5,
   });
