@@ -1,13 +1,40 @@
 import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import { createPool, type Pool } from "mysql2";
 import { InsertUser, feedbackMessages, localAccounts, pushSubscriptions, savedLocations, userPreferences, users } from "../drizzle/schema";
 import { ENV } from "./_core/env";
+import { ensureDatabaseSchema } from "./schema-bootstrap";
 
 let _db: ReturnType<typeof drizzle> | null = null;
+let _pool: Pool | null = null;
+
+function createDatabasePool(databaseUrl: string) {
+  const url = new URL(databaseUrl);
+  const sslRequired =
+    url.searchParams.get("ssl-mode")?.toUpperCase() === "REQUIRED" ||
+    url.searchParams.get("sslmode")?.toLowerCase() === "require" ||
+    process.env.DATABASE_SSL === "true" ||
+    url.hostname.endsWith(".aivencloud.com");
+
+  return createPool({
+    host: url.hostname,
+    port: Number(url.port || 3306),
+    user: decodeURIComponent(url.username),
+    password: decodeURIComponent(url.password),
+    database: decodeURIComponent(url.pathname.replace(/^\//, "")),
+    ssl: sslRequired ? {} : undefined,
+    waitForConnections: true,
+    connectionLimit: 5,
+  });
+}
 
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
-    try { _db = drizzle(process.env.DATABASE_URL); }
+    try {
+      _pool = createDatabasePool(process.env.DATABASE_URL);
+      await ensureDatabaseSchema(_pool);
+      _db = drizzle(_pool);
+    }
     catch (error) { console.warn("[Database] Failed to connect:", error); _db = null; }
   }
   return _db;
